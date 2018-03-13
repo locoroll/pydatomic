@@ -1,6 +1,9 @@
 # -*- coding: utf-8 -*-
 import requests
-from urlparse import urljoin
+try:
+    from urllib.parse import urljoin
+except ImportError:
+    from urlparse import urljoin
 from pydatomic.edn import loads
 
 
