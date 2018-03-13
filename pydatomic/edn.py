@@ -14,7 +14,7 @@ STOP_CHARS = " ,\n\r\t"
 def coroutine(func):
     def start(*args,**kwargs):
         cr = func(*args,**kwargs)
-        cr.next()
+        next(cr)
         return cr
     return start
 
@@ -182,7 +182,7 @@ def parser(target, stop=None):
             else:
                 if len(l) % 2:
                     raise Exception("Map literal must contain an even number of elements")
-                target.send(dict(zip(l[::2], l[1::2])))     # No frozendict yet
+                target.send(dict(list(zip(l[::2], l[1::2]))))     # No frozendict yet
         else:
             raise ValueError("Unexpected character in edn", c)
 
