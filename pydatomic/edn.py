@@ -33,7 +33,6 @@ def inst_handler(time_string):
     return datetime.strptime(time_string[:23], '%Y-%m-%dT%H:%M:%S.%f')
 
 def bytes_handler(s):
-    print("The bytes are %s" % s)
     return s
 
 tag_handlers = {'inst':inst_handler,
