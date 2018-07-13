@@ -54,6 +54,32 @@ class Datomic(object):
         assert r.status_code == 200
         return loads(r.content)
 
+    def datoms(self, dbname, index, components, **kwargs):
+        assert index in ('eavt', 'aevt', 'avet', 'vaet')
+        t = kwargs.get('t', '-')
+        offset = kwargs.get('offset', None)
+        limit = kwargs.get('limit', None)
+        history = kwargs.get('history', None)
+        asof = kwargs.get('as_of', None)
+        since = kwargs.get('since', None)
+        params = {'index': index,
+                  'components': '[{0}]'.format(' '.join(str(a) for a in components))}
+        if offset is not None:
+            params['offset'] = str(offset)
+        if limit is not None:
+            params['limit'] = str(limit)
+        if history:
+            params['history'] = 'true'
+        if asof is not None:
+            params['as-of'] = str(asof)
+        if since is not None:
+            params['since'] = str(since)
+        r = requests.get(self.db_url(dbname) + '/' + t + '/datoms', params=params,
+                         headers={'Accept': 'application/edn'})
+        assert r.status_code == 200
+        return loads(r.content)
+
+
 if __name__ == '__main__':
     q = """[{
   :db/id #db/id[:db.part/db]
